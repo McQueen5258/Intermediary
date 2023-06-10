@@ -2,7 +2,9 @@ const { default: axios } = require("axios");
 const cheerio = require("cheerio");
 const express = require("express");
 const path = require("path");
+const serverless = require("serverless-http");
 const app = express();
+const router = express.Router();
 app.use(express.json());
 // const https = require("node:https");
 
@@ -153,6 +155,9 @@ app.get("/redpost/:postId", async (req, res) => {
   }
 });
 
+app.use("/.netlify/functions/api", router);
 app.listen(port, () => {
   console.log(`服务器端运行成功: http://localhost:${port}`);
 });
+
+module.exports.handler = serverless(app);
